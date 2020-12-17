@@ -66,12 +66,24 @@ fn day14(c: &mut Criterion) {
     });
 }
 
-
 use aoc_rust::day15;
 fn day15(c: &mut Criterion) {
     let contents: &'static [u8] = include_bytes!("../inputs/15.txt");
+    c.bench_function("day15::parse", |b| b.iter(|| day15::parse(&contents)));
     c.bench_function("day15::part1", |b| b.iter(|| day15::part1(&contents)));
     c.bench_function("day15::part2", |b| b.iter(|| day15::part2(&contents)));
+}
+
+use aoc_rust::day16;
+fn day16(c: &mut Criterion) {
+    let contents: &'static [u8] = include_bytes!("../inputs/day16.txt");
+    c.bench_function("day16::parse(part1)", |b| {
+        b.iter(|| {
+            let mut c = contents;
+            day16::ticket_info::TicketInfo::parse(&mut c);
+        })
+    });
+    c.bench_function("day16::part1", |b| b.iter(|| day16::part1(&contents)));
 }
 
 // fn bench_part1(c: &mut Criterion) {
@@ -90,5 +102,5 @@ fn day15(c: &mut Criterion) {
 #[cfg(not(windows))]
 criterion_group!(bench, day7, day11, day12);
 #[cfg(windows)]
-criterion_group!(bench, day14, day15);
+criterion_group!(bench, day14, day15, day16);
 criterion_main!(bench);
